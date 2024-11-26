@@ -1096,7 +1096,10 @@ class TCA():
         all_z=embeddings_arr
         self.num_classes=num_classes
         self.labels=logits_arr
-        self.ent=softmax_entropy(logits_arr)
+
+        #self.uncertainty=self.compute_uncertainty(logits_arr)
+        self.uncertainty=softmax_entropy(logits_arr) #Entropy also reflects uncertainty
+        
         self.proportion=proportion_vector  
 
         supports, labels = self.select_supports_different_proportion()
@@ -1115,7 +1118,14 @@ class TCA():
         p_w = torch.cat(p_w_chunks, dim=0)
         return p_w
 
+    def compute_uncertainty(logits):
+        prob = F.softmax(logits, dim=-1)
+        max_indices = torch.argmax(prob, dim=-1)
+        onehot = F.one_hot(max_indices, num_classes=prob.size(-1)).float()
+        uncertainty = torch.norm(onehot - prob, p=2, dim=-1)
     
+        return uncertainty
+
     def coral_loss(self,C_s, C_t):
         return torch.norm(C_s - C_t, p='fro') ** 2
     
@@ -1151,17 +1161,17 @@ class TCA():
     
     def select_supports_different_proportion(self):
         all_samples_num=0
-        ent_s = self.ent
+        uncertainty = self.uncertainty
         y_hat = self.labels.argmax(dim=1).long()
         filter_K = self.filter_K
         if filter_K == -1:
-            indices = torch.LongTensor(list(range(len(ent_s))))
+            indices = torch.LongTensor(list(range(len(uncertainty))))
             return self.supports, self.labels
 
         indices = []
-        indices1 = torch.LongTensor(list(range(len(ent_s)))).cuda()
+        indices1 = torch.LongTensor(list(range(len(uncertainty)))).cuda()
         for i in range(self.num_classes):
-            _, indices2 = torch.sort(ent_s[y_hat == i])
+            _, indices2 = torch.sort(uncertainty[y_hat == i])
             indices.append(indices1[y_hat==i][indices2][:math.floor(filter_K*self.proportion[i])])
             all_samples_num+=math.floor(filter_K*self.proportion[i])
         indices = torch.cat(indices)
