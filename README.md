@@ -1,5 +1,5 @@
 # TCA: Test-time Correlation Alignment
-__This repo is officical PyTorch implement of 'Test-time Correlation Alignment'__  
+__This repo is officical PyTorch implement of ['Test-time Correlation Alignment' (ICML 2025)](https://arxiv.org/abs/2505.00533)__  
 This codebase is mainly based on [TSD](https://github.com/SakurajimaMaiii/TSD) and [AETTA](https://github.com/taeckyung/AETTA).  
 ## Dependence
 We use `python==3.8.13`, other packages including:
