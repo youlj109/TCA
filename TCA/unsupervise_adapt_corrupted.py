@@ -310,7 +310,6 @@ if __name__ == '__main__':
             testset = ImageFolder(root=data_root,transform=test_transform)
         dataloader = DataLoader(testset,batch_size=args.batch_size,shuffle=True,num_workers=args.N_WORKERS,pin_memory=True)
 
-
         total,correct = 0,0
         acc_arr = []
         embeddings_arr, logits_arr = torch.tensor([]).cuda(), torch.tensor([]).cuda() 
