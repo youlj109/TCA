@@ -20,8 +20,8 @@ conda env create -f TCA.yml -n TCA
 ```
 ## Dataset
 Download __PACS__ and __OfficeHome__ datasets used in our paper from:  
-[PACS](https://drive.google.com/uc?id=1JFr8f805nMUelQWWmfnJR3y4_SYoN5Pd)  
-[OfficeHome](https://drive.google.com/uc?id=1uY0pj7oFsjMxRwaD3Sxy0jgel0fsYXLC)  
+[PACS](https://huggingface.co/datasets/flwrlabs/pacs)  
+[OfficeHome](https://www.hemanthdv.org/officeHomeDataset.html) 
 Download them from the above links, and organize them as follows.  
 ```
 |-your_data_dir
